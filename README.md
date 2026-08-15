@@ -4,109 +4,130 @@
   <img src="docs/banner.png" alt="dsh-okx-skill-hub" width="640">
 </p>
 
-Plug-and-play OKX Agent Skills adapted for **DeepSeek Harness (DSH)**.
+OKX 官方 Agent Skills 技能库 —— 为 **DeepSeek Harness (DSH)** 适配的即插即用技能集合。
 
-This repo ports the official OKX [`okx-cex-market`](https://www.okx.com/en-us/agent-tradekit/skills/okx-cex-market) skill (from [okx/agent-skills](https://github.com/okx/agent-skills)) into the DSH skill ecosystem with **two install channels**: a plain `skills/` directory (copy & run) and a `dsh-plugin` bundle (one-command install / uninstall).
+> 本仓库把 OKX 官方 `okx-cex-market` 技能原样移植进 DSH 生态，并提供 **纯技能目录** 与 **dsh-plugin 插件** 双通道安装。
 
-## What's inside
+## 这是什么
 
-| Skill | Description | Included | API key |
+[OKX Agent Skills](https://github.com/okx/agent-skills) 是 OKX 官方的即插即用 AI Agent 技能库，通过单个 `okx` CLI 让任意 AI Agent 查询行情、管理持仓、运行网格/定投机器人，无需自行对接 API。本仓库将这些官方技能适配到 DeepSeek Harness 的技能体系（`SKILL.md` 目录束格式），让 DSH 用户开箱即用。
+
+**已收录技能：**
+
+| 技能 | 说明 | 安装 | 需 API Key |
 |---|---|---|---|
-| [`okx-cex-market`](skills/okx-cex-market/SKILL.md) | Live market data: price / ticker / order book / candles / funding rate / open interest / 70+ technical indicators (RSI, MACD, EMA, Bollinger, KDJ, SuperTrend, AHR999, BTC Rainbow, …) | ✅ | ❌ (read-only public data) |
-| `okx-cex-portfolio` | Balance & positions | 🚧 PR welcome | ✅ |
-| `okx-cex-trade` | Place / cancel orders | 🚧 PR welcome | ✅ |
-| `okx-cex-bot` | Grid / DCA bots | 🚧 PR welcome | ✅ |
+| [`okx-cex-market`](skills/okx-cex-market/SKILL.md) | 行情数据：价格/ticker/订单簿/K线/资金费率/未平仓/技术指标（RSI、MACD、EMA、布林带、KDJ、SuperTrend、AHR999、BTC 彩虹等 70+） | ✅ 已收录 | ❌ 无需（纯只读公开数据） |
+| `okx-cex-portfolio` | 账户余额/持仓 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| `okx-cex-trade` | 下单/撤单 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| `okx-cex-bot` | 网格/定投机器人 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
 
-## Why this works out of the box
+## 为什么适配 DeepSeek Harness
 
-DSH and OKX use the **same skill convention** (`<name>/SKILL.md` with `name`/`description` frontmatter plus a `references/` resource dir), so the official skill drops in with **zero rework**. Verified end-to-end on a live DSH instance (discovery → catalog → `skill` tool load).
+DSH 的技能格式与 OKX 官方技能**完全同构**（`<技能名>/SKILL.md` + 头信息 `name`/`description` + `references/` 资源目录），因此**零改动的直接复制**即可被 DSH 发现、加载和执行：
 
-## Install
+| 项目 | DSH 要求 | OKX 官方技能现状 |
+|---|---|---|
+| 目录结构 | `<name>/SKILL.md`（单层） | `skills/okx-cex-market/SKILL.md` ✅ |
+| 头信息 | `name`（短横线命名）+ `description` | `name: okx-cex-market` + `description` ✅ |
+| 资源引用 | `{baseDir}/references/...` 按需加载 | `references/*.md` 5 个命令参考 ✅ |
+| 版本/来源 | 可选 `metadata` | `_meta.json`（含官方 sha256 签名）✅ |
 
-### Option 1 — plain skill directory (no deps)
+## 安装
+
+### 方式一：纯技能目录（零依赖，推荐先试）
 
 ```bash
-git clone https://github.com/<your-org>/dsh-okx-skill-hub.git
+# 用户级（全会话生效，所有 profile）
+git clone https://github.com/kongyecn-wq/dsh-okx-skill-hub.git
 cp -r dsh-okx-skill-hub/skills/okx-cex-market ~/.dsh/skills/
 cp -r dsh-okx-skill-hub/skills/_shared ~/.dsh/skills/
-# or project-scoped:
-cp -r dsh-okx-skill-hub/skills/okx-cex-market <project-root>/.dsh/skills/
-cp -r dsh-okx-skill-hub/skills/_shared <project-root>/.dsh/skills/
+
+# 或项目级（跟随仓库走，仅该项目会话可见）
+cp -r dsh-okx-skill-hub/skills/okx-cex-market <项目根>/.dsh/skills/
+cp -r dsh-okx-skill-hub/skills/_shared <项目根>/.dsh/skills/
 ```
 
-Or run the one-liner installer:
+Windows 用户直接运行：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File install.ps1           # user level
-powershell -ExecutionPolicy Bypass -File install.ps1 -Project   # project level
+powershell -ExecutionPolicy Bypass -File install.ps1          # 用户级
+powershell -ExecutionPolicy Bypass -File install.ps1 -Project  # 项目级
 ```
 
+macOS/Linux 用户直接运行：
+
 ```bash
-./install.sh            # user level
-./install.sh --project  # project level
+./install.sh            # 用户级
+./install.sh --project  # 项目级
 ```
 
-### Option 2 — dsh-plugin bundle (one command, clean uninstall)
+### 方式二：dsh-plugin 插件（一条命令，可卸载）
 
 ```bash
-git clone https://github.com/<your-org>/dsh-okx-skill-hub.git
+git clone https://github.com/kongyecn-wq/dsh-okx-skill-hub.git
 cd dsh-okx-skill-hub
-dsh plugin --profile web add .
-# or repository-plugin form:
-dsh plugin --profile web add <your-org>/dsh-okx-skill-hub#main&path:/.dsh-plugin
+dsh plugin --profile web add .          # 安装到 web profile
+# 或仓库插件格式：
+dsh plugin --profile web add kongyecn-wq/dsh-okx-skill-hub#main&path:/.dsh-plugin
 ```
 
-The bundle registers a dedicated `okx-hub` skill provider exposing only this repo's `skills/` dir — it never touches your user/project skill roots. Uninstall: `dsh plugin --profile web remove dsh-okx-skill-hub`.
+插件会注册一个独立的技能提供者 `okx-hub`，只暴露本仓库 `skills/` 目录里的技能，不污染你的用户/项目技能根。卸载：
 
-### Runtime dependency: the `okx` CLI
+```bash
+dsh plugin --profile web remove dsh-okx-skill-hub
+```
+
+### 安装 `okx` CLI（技能运行时依赖）
 
 ```bash
 npm install -g @okx_ai/okx-trade-cli
-okx market ticker BTC-USDT   # verify
+okx market ticker BTC-USDT   # 验证
 ```
 
-Market commands are read-only and need **no API key**. Trading skills require `OKX_API_KEY` / `OKX_SECRET_KEY` / `OKX_PASSPHRASE` (or `okx auth login` OAuth).
+> 行情类命令全部只读、无需 API Key。交易类技能（portfolio/trade/bot）需要 `OKX_API_KEY` / `OKX_SECRET_KEY` / `OKX_PASSPHRASE`（或 `okx auth login` 登录）。
 
-## Example prompts
+## 使用示例
 
-- "What's BTC at right now?" → `okx market ticker BTC-USDT`
-- "Show me ETH 4h candles" → `okx market candles ETH-USDT --bar 4H`
-- "Funding rate for BTC-USDT perp" → `okx market funding-rate BTC-USDT-SWAP`
-- "RSI and MACD on BTC daily" → `okx market indicator rsi/macd BTC-USDT`
-- "Top 24h gainers among perps" → `okx market filter --instType SWAP --sortBy chg24hPct`
+装好后直接对 DSH 说：
 
-## Layout
+- 「BTC 现在多少钱？」→ `okx market ticker BTC-USDT`
+- 「看下 ETH 的 4 小时 K 线」→ `okx market candles ETH-USDT --bar 4H`
+- 「BTC-USDT 永续的资金费率是多少」→ `okx market funding-rate BTC-USDT-SWAP`
+- 「RSI、MACD 帮我看看 BTC 日线」→ `okx market indicator rsi/macd BTC-USDT`
+- 「哪些合约 24 小时涨幅最大」→ `okx market filter --instType SWAP --sortBy chg24hPct`
+
+## 仓库结构
 
 ```
 dsh-okx-skill-hub/
-├── skills/                          # ① plain directory channel
-│   ├── _shared/preflight.md         #    shared OKX CLI preflight (official)
-│   └── okx-cex-market/              #    official skill, verbatim port
-│       ├── SKILL.md                 #    main skill (frontmatter + command index)
-│       ├── _meta.json               #    official signed metadata (sha256-verifiable)
-│       └── references/              #    5 command reference docs
-├── .dsh-plugin/                     # ② plugin channel (dsh plugin add)
-│   ├── package.json                 #    repository-plugin manifest
-│   └── cordis.patch.yml             #    patch: registers the okx-hub provider
-├── package.json                     #    npm bundle manifest (dsh.bundle)
-├── install.ps1 / install.sh         #    one-click installers
-└── docs/ADAPTATION.md               #    adaptation & verification notes
+├── skills/                          # ① 纯技能目录通道（复制即用）
+│   ├── _shared/preflight.md         #    OKX CLI 预检（官方共享文件）
+│   └── okx-cex-market/              #    官方技能原样移植
+│       ├── SKILL.md                 #    主技能（头信息 + 命令索引）
+│       ├── _meta.json               #    官方签名元数据（sha256 可校验）
+│       └── references/              #    5 个命令参考文档
+├── .dsh-plugin/                     # ② 插件通道（dsh plugin add）
+│   ├── package.json                 #    仓库插件包清单
+│   └── cordis.patch.yml             #    patch：注册 okx-hub 技能提供者
+├── package.json                     #    npm 插件清单（dsh.bundle）
+├── install.ps1 / install.sh         #    一键安装脚本
+└── docs/ADAPTATION.md               #    适配与实测记录
 ```
 
-## Roadmap
+## 生态路线图
 
-- [x] `okx-cex-market` port, dual-channel install, verified on live DSH
-- [ ] Port `okx-cex-portfolio` / `okx-cex-trade` / `okx-cex-bot`
-- [ ] Auto-sync script tracking official OKX versions (sha256-checked)
-- [ ] Tag `dsh-plugin` / `dsh-skill`, submit to awesome lists & plugin markets
-- [ ] CI: signature verification + frontmatter lint
+- [x] `okx-cex-market` 适配 + 双通道安装 + 本机实测
+- [ ] 收录 `okx-cex-portfolio` / `okx-cex-trade` / `okx-cex-bot`（官方仓库同步）
+- [ ] 技能自动更新脚本（跟随 OKX 官方版本，保留 sha256 校验）
+- [ ] 挂 `dsh-plugin` / `dsh-skill` 话题，投稿精选列表与插件市场
+- [ ] CI：官方签名校验 + 头信息结构检查
 
-## Credits & license
+## 致谢与许可
 
-- Skill content © [OKX](https://github.com/okx/agent-skills) (MIT). This repo only adapts & distributes for the DSH ecosystem.
-- Wrapper code (plugin, scripts, docs): MIT.
+- 技能内容版权归 [OKX](https://github.com/okx/agent-skills) 所有（MIT License），本仓库仅做 DSH 生态适配与分发。
+- 包装代码（插件、脚本、文档）采用 MIT License。
 
-## Links
+## 相关链接
 
-- [OKX Agent Skills](https://github.com/okx/agent-skills) · [OKX Skills Marketplace](https://www.okx.com/en-us/agent-tradekit/skills/okx-cex-market)
-- [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · skill format: `packages/skill/skill-filesystem` in the official repo
+- [OKX Agent Skills](https://github.com/okx/agent-skills) · [OKX 技能市场](https://www.okx.com/zh-hans/agent-tradekit/skills/okx-cex-market)
+- [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · DSH 技能格式见官方仓库 `packages/skill/skill-filesystem`
