@@ -1,157 +1,241 @@
-# OKX 技能清单与数据能力盘点（规划用）
+# OKX 技能完整清单（11 个官方技能 · 详细版）
 
-> 更新时间：2026-08-15 · 数据来源：OKX 官方 [agent-skills](https://github.com/okx/agent-skills) 仓库（github-main 分支，共 11 个技能）+ 本机实测
-> 用途：技能收录规划、DSH 生态建设规划、交易策略能力规划
-
----
-
-## 一、总览（11 个官方技能）
-
-| # | 技能 | 类别 | 收录状态 | 需凭据 | 依赖 |
-|---|---|---|---|---|---|
-| 1 | `okx-cex-market` | 行情数据 | ✅ 已收录 | ❌ 无 | `okx` CLI |
-| 2 | `okx-cex-portfolio` | 账户/持仓 | ✅ 已收录 | ✅ API Key | `okx` CLI |
-| 3 | `okx-cex-trade` | 交易下单 | ✅ 已收录 | ✅ API Key | `okx` CLI |
-| 4 | `okx-cex-smartmoney` | 聪明钱分析 | ✅ 已收录 | ✅ OAuth | `okx` CLI |
-| 5 | `okx-sentiment-tracker` | 新闻/情绪 | ✅ 已收录 | ✅ API 凭据 | `okx` CLI |
-| 6 | `okx-cex-bot` | 网格/DCA 机器人 | 🚧 未收录 | ✅ API Key | `okx` CLI |
-| 7 | `okx-cex-auth` | 登录/认证 | 🚧 未收录 | 登录用 | `okx` CLI |
-| 8 | `okx-cex-earn` | 赚币 | 🚧 未收录 | ✅ API Key | `okx` CLI |
-| 9 | `earn-hunter` | 赚币机会监控 | 🚧 未收录 | ✅ API Key | `okx` CLI |
-| 10 | `okx-cex-skill-mp` | 技能市场 | 🚧 未收录 | ✅ API Key | `okx` CLI |
-| 11 | `okx-outcomes` | 预测市场 | 🚧 未收录 | ✅ API Key | `okx-outcomes` 独立二进制 |
+> 更新时间：2026-08-15 · 数据来源：OKX 官方 [agent-skills](https://github.com/okx/agent-skills)（github-main）+ 本机实测
+> 认证：OAuth（live+trade 全权限）· 网络：FastLink 全局模式 · CLI：@okx_ai/okx-trade-cli 1.4.2（官方原版）
 
 ---
 
-## 二、已收录技能明细（5 个，本机实测可用）
+## 总览
 
-### 1. okx-cex-market —— 行情数据（唯一免 Key）
-
-**能拉什么：**
-- 📈 价格：`ticker`（最新价/24h 高低/量/涨跌幅）、`tickers`（全品种）、`index-ticker`（指数价）
-- 📊 K线：`candles`（OHLCV，1m~1M，可回溯 2021）、`index-candles`（指数K线）
-- 📚 订单簿：`orderbook`（盘口深度，最多 400 档）
-- 💹 衍生品数据：`funding-rate`（资金费率）、`mark-price`（标记价）、`price-limit`（涨跌停）、`open-interest`（未平仓）、`oi-history`（OI 历史）、`oi-change`（OI 变化扫描器）
-- 🔍 筛选/发现：`filter`（多维筛选：涨幅/成交额/市值/资金费率/OI）、`instruments`（合约规格）、`instruments-by-category`（股票代币/金属/商品/外汇/债券）
-- 🧮 技术指标：`indicator`（RSI/MACD/EMA/布林带/KDJ/SuperTrend/AHR999/BTC彩虹等 70+）、`indicator list`（指标清单）
-- 🔄 其他：`trades`（最近成交）、`pair-spread`（配对价差统计）
-
-**命令数**：19 条 · **实测**：✅ ticker/candles/funding-rate/RSI/filter 全部调通
-
----
-
-### 2. okx-cex-portfolio —— 账户与持仓
-
-**能拉什么：**
-- 💰 余额：`balance`（交易账户）、`asset-balance`（资金账户）、`balance-all`（总资产快照+估值）
-- 📦 持仓：`positions`（当前持仓+浮盈）、`positions-history`（历史平仓+已实现盈亏）
-- 📋 账单：`bills`（资金流水/交易记录）
-- 🏷️ 费率：`fees`（maker/taker 费率等级）
-- ⚙️ 账户：`config`（UID/账户等级/持仓模式）、`max-size`/`max-avail-size`（最大可开量）、`max-withdrawal`（可提币）
-- 🔄 操作：`transfer`（资金/交易账户互转）、`set-position-mode`（切换单向/双向持仓）
-
-**命令数**：12 条（10 读 + 2 写）· **实测**：✅ balance/positions/config 全部调通
+| # | 技能 | 类别 | 收录 | 凭据 | 依赖 | 实测 |
+|---|---|---|---|---|---|---|
+| 1 | okx-cex-market | 行情数据 | ✅ | 无 | okx CLI | ✅ 全通 |
+| 2 | okx-cex-portfolio | 账户/持仓 | ✅ | OAuth/Key | okx CLI | ✅ 全通 |
+| 3 | okx-cex-trade | 交易下单 | ✅ | OAuth/Key | okx CLI | ✅ 实盘成交 |
+| 4 | okx-cex-smartmoney | 聪明钱分析 | ✅ | OAuth | okx CLI | ✅ 已通 |
+| 5 | okx-sentiment-tracker | 新闻/情绪 | ✅ | OAuth/Key | okx CLI | ✅ 已通 |
+| 6 | okx-cex-bot | 网格/DCA 机器人 | 🚧 | OAuth/Key | okx CLI | - |
+| 7 | okx-cex-auth | 认证登录 | 🚧 | - | okx CLI | - |
+| 8 | okx-cex-earn | 赚币 | 🚧 | OAuth/Key | okx CLI | - |
+| 9 | earn-hunter | 赚币机会监控 | 🚧 | OAuth/Key | okx CLI | - |
+| 10 | okx-cex-skill-mp | 技能市场 | 🚧 | OAuth/Key | okx CLI | - |
+| 11 | okx-outcomes | 预测市场 | 🚧 | OAuth/Key | okx CLI + **okx-outcomes 二进制** | - |
 
 ---
 
-### 3. okx-cex-trade —— 交易下单（现货+永续+交割+期权+事件合约）
+## 一、已收录技能（5 个，详细命令）
 
-**能做什么：**
-- 🟢 现货（SPOT）：`spot place/cancel/amend`、TP/SL（`spot algo place`）、追踪止损（`spot algo trail`）
-- 🔷 永续（SWAP）：`swap place/cancel/amend/close`、杠杆（`swap leverage`）、TP/SL（`swap algo place`）、追踪止损、`swap positions/orders/fills`
-- 🔷 交割（FUTURES）：同上全套
-- 🎯 期权（OPTION）：`option instruments/greeks/place/cancel/amend/positions/fills`
-- ⚡ 事件合约（EVENT）：`event browse/series/markets/place/cancel/orders`（YES/NO 预测）
+### 1. okx-cex-market — 行情数据（免凭据）
 
-**命令数**：约 61 条（spot 12 + swap 15 + futures 15 + option 10 + event 9）· **实测**：✅ 开仓/设杠杆/挂 TP/SL 全部调通（net 模式注意省略 `--posSide`）
+**能力**：实时价格 / K线 / 订单簿 / 衍生品数据 / 市场筛选 / 70+ 技术指标 / 非加密资产
 
----
-
-### 4. okx-cex-smartmoney —— 聪明钱分析
-
-**能拉什么：**
-- 🏆 交易员排行：`trader-commands`（leaderboard、交易员收益/胜率）
-- 👀 持仓跟踪：指定交易员当前持仓、入场价
-- 📜 成交记录：交易员历史成交、平仓记录、已实现盈亏
-- 🧭 共识信号：多空比、资金流向、仓位强度、信号历史
-
-**命令数**：4 个 reference 模块（signal/trader/templates/workflows）· **凭据**：OAuth · **实测**：✅ 已发现，未实测命令（需 OAuth 登录）
-
----
-
-### 5. okx-sentiment-tracker —— 新闻与情绪
-
-**能拉什么：**
-- 📰 新闻：`news latest`（最新）、`news by-coin`（币种新闻）、`news search`（关键词搜索）、`news detail`（全文）
-- 💭 情绪：`news by-sentiment`（情绪筛选）、`news coin-sentiment`（币种情绪快照）、`news coin-trend`（情绪趋势）、`news sentiment-rank`（情绪排行）
-- 📅 宏观：`news economic-calendar`（经济日历：NFP/CPI/GDP/FOMC/PMI）、`news list-regions`（日历区域）
-- 🌐 数据源：`news platforms`（新闻源列表）
-
-**命令数**：11 条 · **凭据**：API 凭据（OAuth2.1）· **实测**：✅ `news latest` 调通（返回实时新闻流，本机 API Key 模式可用）
-
----
-
-## 三、未收录技能（6 个，规划参考）
-
-### 6. okx-cex-bot —— 网格/DCA 机器人 ⭐ 优先
-- 网格机器人：现货/合约/币本位网格（`bot grid create/stop/amend`）
-- DCA 马丁：现货马丁/合约马丁（`bot dca ...`）
-- 监控：`bot grid-orders`、盈亏监控
-- **价值**：被动策略 + 与 trade/market 组合成"网格+行情"联动
-- 凭据：API Key
-
-### 7. okx-cex-auth —— 登录/认证
-- `okx config init` 引导、OAuth 登录、API Key 配置
-- **价值**：其他技能的前置依赖，收录后可做"一键认证"指引
-- 凭据：无（本身是认证流程）
-
-### 8. okx-cex-earn —— 赚币
-- Simple Earn 活期/定期、Flash Earn、链上质押（staking/DeFi）、双币投资（DCD）、AutoEarn
-- **价值**：闲置资金理财，与 portfolio 联动
-- 凭据：API Key
-
-### 9. earn-hunter —— 赚币机会监控
-- 自动监控闪赚/定期/活期机会、推送通知、引导申购
-- **价值**：通知型技能，可与 DSH 通知插件组合
-- 凭据：API Key
-
-### 10. okx-cex-skill-mp —— 技能市场
-- 搜索/浏览/安装/下载交易技能、技能市场
-- **价值**：技能生态入口，收录后可做"技能自更新"
-- 凭据：API Key
-
-### 11. okx-outcomes —— 预测市场
-- YES/NO 事件合约（原 OKX Predictions）：事件列表/详情/下单
-- **注意**：依赖**独立二进制 `okx-outcomes`**（非 `okx` CLI）
-- 凭据：API Key
-
----
-
-## 四、规划建议
-
-### 收录优先级矩阵
-
-| 优先级 | 技能 | 理由 |
+| 命令 | 功能 | 实测 |
 |---|---|---|
-| P0（下一批）| `okx-cex-bot` | 网格/DCA 与已收录的 market/trade 形成完整"分析→交易→自动化"闭环 |
-| P0 | `okx-cex-auth` | 所有需凭据技能的前置，收录后体验闭环 |
-| P1 | `okx-cex-earn` + `earn-hunter` | 闲置资金增值，差异化能力 |
-| P1 | `okx-outcomes` | 独有预测市场，但需额外二进制，安装成本高 |
-| P2 | `okx-cex-skill-mp` | 偏生态工具，价值最低 |
+| `okx market ticker <instId>` | 最新价、24h 高低/量/涨跌幅 | ✅ |
+| `okx market tickers <SPOT/SWAP/FUTURES/OPTION>` | 全品种行情表 | ✅ |
+| `okx market instruments --instType <t>` | 合约规格（ctVal/lotSz/minSz/杠杆上限）| ✅ |
+| `okx market orderbook <instId> [--sz]` | 订单簿深度（最多 400 档）| - |
+| `okx market candles <instId> [--bar] [--limit]` | OHLCV K线（1m~1M，回溯至 2021）| ✅ |
+| `okx market index-candles <instId>` | 指数 K线（BTC-USD 等）| - |
+| `okx market funding-rate <instId> [--history]` | 资金费率（SWAP）| ✅ |
+| `okx market trades <instId>` | 最近成交 | - |
+| `okx market mark-price --instType <t>` | 标记价格 | - |
+| `okx market index-ticker` | 指数价格 | - |
+| `okx market price-limit <instId>` | 涨跌停限价 | - |
+| `okx market open-interest --instType <t>` | 未平仓合约 | - |
+| `okx market instruments-by-category --instCategory <3-7>` | 股票代币/金属/商品/外汇/债券发现 | - |
+| `okx market filter --instType <t> [多维筛选]` | 筛选器（涨幅/成交额/市值/资金费率/OI）| ✅ |
+| `okx market oi-history <instId>` | OI 历史序列 | - |
+| `okx market oi-change --instType <t>` | OI 变化扫描器（吸筹/派发）| - |
+| `okx market indicator list` | 全部指标清单 | ✅ |
+| `okx market indicator <rsi/macd/ema/...> <instId>` | 70+ 技术指标（RSI/MACD/EMA/BB/KDJ/SuperTrend/AHR999/彩虹）| ✅ |
+| `okx market pair-spread <A> <B>` | 配对价差统计（均值回归用）| - |
 
-### 能力组合规划（已收录 5 个即可覆盖）
+---
+
+### 2. okx-cex-portfolio — 账户与持仓
+
+**能力**：余额 / 持仓 / 盈亏 / 账单 / 费率 / 划转 / 持仓模式
+
+| 命令 | 功能 | 实测 |
+|---|---|---|
+| `okx account balance-all` | 总资产快照（交易+资金+估值）| ✅ |
+| `okx account balance [ccy]` | 交易账户余额 | ✅ |
+| `okx account asset-balance [--valuation]` | 资金账户 + 总估值 | ✅ |
+| `okx account positions` | 当前持仓 + 浮动盈亏 | ✅ |
+| `okx account positions-history` | 历史平仓 + 已实现盈亏 | - |
+| `okx account bills` | 账户流水/交易记录 | - |
+| `okx account fees --instType <t>` | 费率等级（maker/taker）| - |
+| `okx account config` | UID/账户等级/持仓模式 | ✅ |
+| `okx account max-size / max-avail-size` | 最大可开/可买量 | - |
+| `okx account max-withdrawal` | 最大提币 | - |
+| `okx account transfer` | 资金⇄交易账户划转 | - |
+| `okx account set-position-mode` | 单向/双向持仓切换 | - |
+
+---
+
+### 3. okx-cex-trade — 交易下单（现货+永续+交割+期权+事件合约，约 61 命令）
+
+**能力**：下单 / 撤单 / 改单 / 平仓 / 杠杆 / 止盈止损 / 追踪止损
+
+**永续 SWAP（15 命令）**：`swap place`（下单）· `swap cancel` · `swap amend` · `swap close`（平仓）· `swap leverage`（杠杆）· `swap algo place`（TP/SL）· `swap algo trail`（追踪止损）· `swap algo amend/cancel` · `swap positions/orders/get/fills/get-leverage/algo orders`
+**现货 SPOT（12 命令）**：`spot place/cancel/amend` · `spot algo place/amend/cancel`（TP/SL）· `spot algo trail` · `spot orders/get/fills/algo orders`
+**交割 FUTURES（15 命令）**：与 SWAP 同构
+**期权 OPTION（10 命令）**：`option instruments/greeks`（链+希腊值）· `option place/cancel/amend/batch-cancel` · `option orders/get/positions/fills`
+**事件合约 EVENT（9 命令）**：`event browse/series/events/markets/place/amend/cancel/orders/fills`
+
+> 实测：✅ 开仓/设杠杆/挂 TP/SL 全部成交（net 模式注意省略 `--posSide`）
+
+---
+
+### 4. okx-cex-smartmoney — 聪明钱分析（需 OAuth）
+
+**能力**：牛人榜 / 交易员持仓跟踪 / 成交记录 / 多空共识信号
+
+| 命令模块 | 功能 | 实测 |
+|---|---|---|
+| `okx smartmoney traders-by-filter --limit <n>` | 交易员排行（盈利/胜率/回撤）| ✅ |
+| `okx smartmoney traders` | 交易员列表/详情 | - |
+| `okx smartmoney positions` | 交易员当前持仓跟踪 | - |
+| `okx smartmoney trades` | 交易员成交记录 | - |
+| `okx smartmoney closed-positions` | 历史平仓 + 已实现盈亏 | - |
+| `okx smartmoney consensus / signals` | 聚合共识信号 / 信号历史 | - |
+| `okx smartmoney long-short-ratio` | 多空比 | - |
+
+---
+
+### 5. okx-sentiment-tracker — 新闻与情绪
+
+**能力**：加密新闻 / 币种情绪 / 情绪排行 / 宏观经济日历
+
+| 命令 | 功能 | 实测 |
+|---|---|---|
+| `okx news latest [--limit]` | 最新新闻流 | ✅ |
+| `okx news by-coin` | 指定币种新闻 | - |
+| `okx news search <kw>` | 关键词搜索（SEC/ETF/监管）| - |
+| `okx news by-sentiment` | 情绪筛选新闻 | - |
+| `okx news detail` | 文章全文 | - |
+| `okx news coin-sentiment` | 币种情绪快照 | - |
+| `okx news coin-trend` | 情绪趋势 | - |
+| `okx news sentiment-rank` | 情绪排行 | - |
+| `okx news platforms` | 新闻源列表 | - |
+| `okx news economic-calendar` | 经济日历（NFP/CPI/GDP/FOMC/PMI）| - |
+| `okx news list-regions` | 日历区域 | - |
+
+---
+
+## 二、未收录技能（6 个，详细命令）
+
+### 6. okx-cex-bot — 网格/DCA 机器人
+
+**能力**：网格策略（现货/合约/币本位）+ 马丁策略（现货/合约）
+
+| 命令 | 功能 |
+|---|---|
+| `okx bot grid create` | 创建网格机器人 |
+| `okx bot grid amend` | 修改区间/网格数/TP/SL |
+| `okx bot grid stop` | 停止网格 |
+| `okx bot grid positions` | 合约网格持仓（强平价/保证金率）|
+| `okx bot grid liquidate-price` | 强平价估算 |
+| `okx bot grid close-position` | 停止后剩余仓位平仓 |
+| `okx bot grid orders / details / sub-orders` | 列表/详情+盈亏/网格成交明细 |
+| `okx bot dca create / stop` | 创建/停止马丁机器人 |
+| `okx bot dca orders / details / sub-orders` | 马丁列表/详情/周期明细 |
+
+---
+
+### 7. okx-cex-auth — 认证登录
+
+**能力**：OAuth 登录 / 登出 / 状态 / auth 二进制管理
+
+| 命令 | 功能 |
+|---|---|
+| `okx auth login --manual --site <global/eea/us/tr>` | OAuth 设备码登录（agent 友好）|
+| `okx auth login --site <X>` | 交互式登录（终端阻塞）|
+| `okx auth logout` | 登出 |
+| `okx auth status --json` | 会话状态/权限 |
+| `okx auth install / install-status / remove` | auth 二进制管理 |
+| `okx config init` | **API Key 向导**（不做 OAuth）|
+
+---
+
+### 8. okx-cex-earn — 赚币
+
+**能力**：活期/定期/闪赚/链上质押/双币赢/自动赚币（**不支持 demo，仅实盘**）
+
+| 命令 | 功能 |
+|---|---|
+| `okx earn savings balance` | Simple Earn 活期余额 |
+| `okx earn savings fixed-orders` | 定期订单 |
+| `okx earn flash-orders` | 闪赚订单 |
+| `okx earn onchain orders` | 链上赚币（质押/DeFi）|
+| `okx earn dcd orders` | 双币投资（双币赢）|
+| `okx earn autoearn` | 自动赚币 |
+
+---
+
+### 9. earn-hunter — 赚币机会监控
+
+**能力**：自动监控赚币机会 + 推送通知 + 引导申购
+
+- 平台检测（TG / 飞书 / 钉钉等通知渠道）
+- 定时调度监控闪赚/定期/活期机会
+- 推送通知并引导申购
+- 配置：`platform.json`（调度/通知渠道/凭据）
+
+---
+
+### 10. okx-cex-skill-mp — 技能市场
+
+**能力**：搜索/安装/管理 OKX 交易技能
+
+| 命令 | 功能 |
+|---|---|
+| `okx skill search <kw>` | 关键词搜索技能 |
+| `okx skill search --categories <id>` | 按分类筛选 |
+| `okx skill categories` | 分类列表 |
+| `okx skill add <name>` | 下载安装到全部 agent |
+| `okx skill download <name>` | 下载包（zip/skill）|
+| `okx skill list` | 本地已装技能 |
+| `okx skill check <name>` | 检查更新 |
+| `okx skill remove <name>` | 卸载 |
+| `okx skill verify <name>` | 签名验证 |
+
+---
+
+### 11. okx-outcomes — 预测市场
+
+**能力**：YES/NO 事件合约（原 OKX Predictions）
+**注意**：需额外安装 `okx-outcomes` 二进制（Windows 从 github.com/okx/outcomes-cli/releases 下载）
+
+| 命令 | 功能 |
+|---|---|
+| `okx outcomes data events / event / event-markets / market` | 事件列表/详情/市场 |
+| `okx outcomes data trending` | 热门事件 |
+| `okx outcomes data ticker / candles` | 结果资产行情/K线 |
+| `okx outcomes search <kw>` | 关键词搜索（OAuth）|
+| `okx outcomes clob price / prices / midpoint / spread / book` | CLOB 报价/深度 |
+| `okx outcomes account balance` | 账户余额 |
+| `okx outcomes trade ...` | 交易 YES/NO（需钱包绑定）|
+
+---
+
+## 三、能力组合与规划
 
 | 场景 | 技能组合 |
 |---|---|
-| 行情研判 | market（K线/指标/资金费率/OI）+ sentiment（新闻/情绪）|
-| 策略信号 | market 指标 + smartmoney 聪明钱方向 + sentiment 情绪 |
-| 执行交易 | trade（永续/现货+TP/SL）|
-| 资金管理 | portfolio（余额/持仓/盈亏/划转）|
-| 自动化 | + bot（网格/DCA，待收录）|
+| 行情研判 | market + sentiment |
+| 策略信号 | market 指标 + smartmoney + sentiment |
+| 执行交易 | trade（永续+TP/SL）|
+| 资金管理 | portfolio |
+| 被动策略 | + bot（待收录）|
+| 闲置资金 | + earn / earn-hunter（待收录）|
+| 技能自更新 | + skill-mp（待收录）|
+| 预测市场 | + outcomes（待收录，需额外二进制）|
 
-### 已上线实测结论
+### 收录优先级
 
-- 免 Key 链路：market ✅（全部命令可用）
-- 交易链路：API Key ✅（开仓/杠杆/TP/SL 已实测成交）
-- 新闻链路：✅（news 命令可用）
-- 聪明钱链路：⏳ 待 OAuth 登录后实测
+- **P0**：okx-cex-bot（补全自动化闭环）、okx-cex-auth（认证指引，流程已实测）
+- **P1**：okx-cex-earn + earn-hunter（闲置资金增值）
+- **P1**：okx-outcomes（独有预测市场，安装成本高）
+- **P2**：okx-cex-skill-mp（生态工具）
