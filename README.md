@@ -12,7 +12,7 @@ OKX 官方 Agent Skills 技能库 —— 为 **DeepSeek Harness (DSH)** 适配�
 
 [OKX Agent Skills](https://github.com/okx/agent-skills) 是 OKX 官方的即插即用 AI Agent 技能库，通过单个 `okx` CLI 让任意 AI Agent 查询行情、管理持仓、运行网格/定投机器人，无需自行对接 API。本仓库将这些官方技能适配到 DeepSeek Harness 的技能体系（`SKILL.md` 目录束格式），让 DSH 用户开箱即用。
 
-**已收录技能（5/12）：**
+**已收录技能（6/11）：**
 
 | 技能 | 说明 | 安装 | 需 API Key |
 |---|---|---|---|
@@ -21,9 +21,10 @@ OKX 官方 Agent Skills 技能库 —— 为 **DeepSeek Harness (DSH)** 适配�
 | [`okx-cex-trade`](skills/okx-cex-trade/SKILL.md) | 下单/撤单/改单：现货、**永续合约**、交割合约、期权（含事件合约） | ✅ 已收录 | ✅ 需要 |
 | [`okx-cex-smartmoney`](skills/okx-cex-smartmoney/SKILL.md) | 聪明钱分析：排行榜交易员/持仓跟踪/共识信号 | ✅ 已收录 | ✅ 需要（OAuth） |
 | [`okx-sentiment-tracker`](skills/okx-sentiment-tracker/SKILL.md) | 加密新闻/情绪分析/宏观经济日历（`okx news`） | ✅ 已收录 | ✅ 需要 |
+| [`okx-cex-earn`](skills/okx-cex-earn/SKILL.md) | 赚币：活期/定期/闪赚/链上质押/双币赢/自动赚币 | ✅ 已收录 | ✅ 需要 |
 | `okx-cex-bot` | 网格/定投机器人 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
 | `okx-cex-auth` | 登录/认证/配置凭证 | 🚧 待收录（欢迎 PR） | 登录用 |
-| `okx-cex-earn` / `earn-hunter` | 赚币：活期/闪赚/质押/双币赢 + 机会监控 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| `earn-hunter` | 赚币机会监控 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
 | `okx-cex-skill-mp` | 技能市场浏览/搜索/安装 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
 | `okx-outcomes` | 预测市场（YES/NO 事件合约） | 🚧 待收录（欢迎 PR） | ✅ 需要 |
 
