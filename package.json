@@ -1,0 +1,27 @@
+{
+  "name": "dsh-okx-skill-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OKX agent-skills 官方技能适配 DeepSeek Harness (DSH) 技能库：skills 目录 + dsh-plugin 双通道安装",
+  "type": "module",
+  "files": [
+    ".dsh-plugin/cordis.patch.yml",
+    "skills"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./.dsh-plugin/cordis.patch.yml"
+    }
+  },
+  "license": "MIT",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "dsh-skill",
+    "okx",
+    "crypto",
+    "market-data",
+    "agent-skills"
+  ]
+}

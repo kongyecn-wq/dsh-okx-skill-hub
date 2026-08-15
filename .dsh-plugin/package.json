@@ -1,0 +1,17 @@
+{
+  "name": "dsh-okx-skill-hub-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OKX skills for DeepSeek Harness — repository-plugin entry (registered via dsh plugin add <repo>#<ref>&path:/.dsh-plugin)",
+  "type": "module",
+  "files": [
+    "cordis.patch.yml",
+    "../skills"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT"
+}

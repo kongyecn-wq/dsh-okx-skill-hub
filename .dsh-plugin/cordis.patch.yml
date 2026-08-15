@@ -1,0 +1,23 @@
+# dsh-okx-skill-hub bundle patch
+#
+# 注册一个独立的 skill-filesystem 提供者，只扫描本 bundle 包内的 skills/ 目录，
+# 使 OKX 官方技能对当前 DSH 会话可见（进入模型的 skill 目录）。
+#
+# 为什么是 insert 而不是覆盖宿主行：web 组合里 host 的 skill-filesystem 已被
+# dsh-web-app 禁用（preset 各自拥有本地发现），因此这里新增一个 providerName
+# 独立的实例注册进 global layer；模型读取目录时按 global + scope 链合并，
+# 新技能会出现在可用技能列表中。
+#
+# includeDefaultRoots: false —— 不重复扫描用户/项目技能根，只暴露本包技能，
+# 避免与用户自己的技能目录产生重复条目。
+#
+# baseUrl 由 Cordis Loader 注入，指向本 patch 所在目录（即 .dsh-plugin/），
+# 因此技能目录用 ../skills/ 解析到仓库根下的 skills/。
+- insert:
+    - id: skill-filesystem-okx-hub
+      name: '@deepseek-ai/dsh-skill-filesystem'
+      config:
+        providerName: okx-hub
+        includeDefaultRoots: false
+        customSkillDirs:
+          - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../skills/', baseUrl))"

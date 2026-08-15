@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# DSH local install artifacts
+.dsh/skills/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+
+# scratch / archives
+*.zip
+_okx_src/
