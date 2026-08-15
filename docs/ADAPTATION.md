@@ -89,3 +89,19 @@ references/workflows.md             sha256:a6e1b298…（与官方一致 ✅）
 4. 用 `_meta.json` 的 sha256 校验复制完整性（注意 `sha256:` 前缀）
 5. 在 `README.md` / `README.zh-CN.md` 的技能表登记，并更新本文件
 6. 本地按 §5 实测两条通道后提交
+
+## 7. 第二批收录（2026-08-15，来自官方 GitHub 仓库）
+
+从 `okx/agent-skills@github-main` 直接拉取 4 个技能（GitHub 源仓库版本**不带** `_meta.json` 签名，只有市场版 zip 带；收录以仓库结构为准，文件大小与 GitHub tree API 逐一核对通过）：
+
+| 技能 | 文件数 | 依赖 | 凭据要求 | 实测 |
+|---|---|---|---|---|
+| `okx-cex-portfolio` | 1（仅 SKILL.md） | `okx` CLI | API Key | ✅ 目录发现 |
+| `okx-cex-trade` | 9（SKILL.md + 8 references：spot/swap/futures/options/event/templates/workflows） | `okx` CLI | API Key | ✅ 目录发现 |
+| `okx-cex-smartmoney` | 5（SKILL.md + 4 references） | `okx` CLI | OAuth | ✅ 目录发现 |
+| `okx-sentiment-tracker` | 2（SKILL.md + workflows） | `okx` CLI（`okx news` 模块） | API 凭据（OAuth2.1） | ✅ 目录发现 |
+
+- 4 个技能 frontmatter 均含 `name`（kebab-case）+ `description`，DSH 兼容 ✅
+- 3 个引用 `_shared/preflight.md`（仓库已备）；`okx-sentiment-tracker` 无 preflight 引用（自带完整结构）✅
+- 全部要求 `@okx_ai/okx-trade-cli`，与已装 CLI（1.4.2）兼容
+- 同步至工作区项目技能根后，DSH watcher 立即发现，`<available_skills>` 目录出现全部 5 个技能 ✅

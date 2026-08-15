@@ -12,14 +12,20 @@ OKX 官方 Agent Skills 技能库 —— 为 **DeepSeek Harness (DSH)** 适配�
 
 [OKX Agent Skills](https://github.com/okx/agent-skills) 是 OKX 官方的即插即用 AI Agent 技能库，通过单个 `okx` CLI 让任意 AI Agent 查询行情、管理持仓、运行网格/定投机器人，无需自行对接 API。本仓库将这些官方技能适配到 DeepSeek Harness 的技能体系（`SKILL.md` 目录束格式），让 DSH 用户开箱即用。
 
-**已收录技能：**
+**已收录技能（5/12）：**
 
 | 技能 | 说明 | 安装 | 需 API Key |
 |---|---|---|---|
 | [`okx-cex-market`](skills/okx-cex-market/SKILL.md) | 行情数据：价格/ticker/订单簿/K线/资金费率/未平仓/技术指标（RSI、MACD、EMA、布林带、KDJ、SuperTrend、AHR999、BTC 彩虹等 70+） | ✅ 已收录 | ❌ 无需（纯只读公开数据） |
-| `okx-cex-portfolio` | 账户余额/持仓 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
-| `okx-cex-trade` | 下单/撤单 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| [`okx-cex-portfolio`](skills/okx-cex-portfolio/SKILL.md) | 账户余额/持仓/盈亏/资金账户 | ✅ 已收录 | ✅ 需要 |
+| [`okx-cex-trade`](skills/okx-cex-trade/SKILL.md) | 下单/撤单/改单：现货、**永续合约**、交割合约、期权（含事件合约） | ✅ 已收录 | ✅ 需要 |
+| [`okx-cex-smartmoney`](skills/okx-cex-smartmoney/SKILL.md) | 聪明钱分析：排行榜交易员/持仓跟踪/共识信号 | ✅ 已收录 | ✅ 需要（OAuth） |
+| [`okx-sentiment-tracker`](skills/okx-sentiment-tracker/SKILL.md) | 加密新闻/情绪分析/宏观经济日历（`okx news`） | ✅ 已收录 | ✅ 需要 |
 | `okx-cex-bot` | 网格/定投机器人 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| `okx-cex-auth` | 登录/认证/配置凭证 | 🚧 待收录（欢迎 PR） | 登录用 |
+| `okx-cex-earn` / `earn-hunter` | 赚币：活期/闪赚/质押/双币赢 + 机会监控 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| `okx-cex-skill-mp` | 技能市场浏览/搜索/安装 | 🚧 待收录（欢迎 PR） | ✅ 需要 |
+| `okx-outcomes` | 预测市场（YES/NO 事件合约） | 🚧 待收录（欢迎 PR） | ✅ 需要 |
 
 ## 为什么适配 DeepSeek Harness
 
@@ -117,7 +123,8 @@ dsh-okx-skill-hub/
 ## 生态路线图
 
 - [x] `okx-cex-market` 适配 + 双通道安装 + 本机实测
-- [ ] 收录 `okx-cex-portfolio` / `okx-cex-trade` / `okx-cex-bot`（官方仓库同步）
+- [x] 收录 `okx-cex-portfolio` / `okx-cex-trade` / `okx-cex-smartmoney` / `okx-sentiment-tracker`
+- [ ] 收录 `okx-cex-bot` / `okx-cex-auth` / `okx-cex-earn` / `earn-hunter` / `okx-cex-skill-mp` / `okx-outcomes`（官方仓库同步）
 - [ ] 技能自动更新脚本（跟随 OKX 官方版本，保留 sha256 校验）
 - [ ] 挂 `dsh-plugin` / `dsh-skill` 话题，投稿精选列表与插件市场
 - [ ] CI：官方签名校验 + 头信息结构检查
